@@ -382,6 +382,22 @@ textarea{width:100%;font-family:'JetBrains Mono';font-size:12px;font-weight:600;
 <div class="card">
 <h2 class="card-title">🔗 สร้างคู่ - ตารางเดียวรวม</h2>
 <div id="crossSummary" style="display:flex; gap:4px; flex-wrap:wrap; margin-bottom:6px;"></div>
+<!-- NEW PAIR FILTER - กรองคู่ในกรอบแดง - ระบบล็อค OR 1-3 หลัก -->
+<div id="pairFilterBox" style="background:#fffbeb;border:1.5px solid #f59e0b;border-radius:10px;padding:8px;margin-bottom:8px;box-shadow:0 1px 0 #fde68a;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:4px;">
+    <b style="font-size:11px;color:#b45309;">🔎 ฟิลเตอร์กรองคู่ (ล็อค OR 1-3 หลัก) - กรอบแดง</b>
+    <span id="pairFilterStats" style="font-size:8px;background:#fef3c7;border:1px solid #fcd34d;border-radius:999px;padding:2px 7px;color:#92400e;">-คู่</span>
+  </div>
+  <div style="display:flex; gap:6px; margin-bottom:6px;">
+    <input id="pairLockIndependent" class="input" type="text" inputmode="numeric" placeholder="เช่น 4 หรือ 45 - กรองคู่ที่มีเลขนี้" style="flex:1;border-color:#f59e0b;" oninput="applyPairFilter()">
+    <button class="btn" onclick="clearPairIndependentFilter()" style="height:32px;background:#fffbeb;border-color:#f59e0b;color:#b45309;">ล้าง</button>
+  </div>
+  <div style="display:flex; gap:6px; flex-wrap:wrap;">
+    <label class="toggle" style="flex:1;border-color:#fde68a;background:#fffbeb;"><input type="radio" name="pairIndependentMode" value="or" checked onchange="applyPairFilter()"> OR - มีเลขใดเลขหนึ่ง</label>
+    <label class="toggle" style="flex:1;border-color:#fde68a;background:#fffbeb;"><input type="radio" name="pairIndependentMode" value="and" onchange="applyPairFilter()"> AND - มีครบทุกเลข</label>
+  </div>
+  <div style="font-size:7.5px;color:#a16207;margin-top:5px;line-height:1.4;">💡 พิมพ์ 1-3 หลัก เช่น <b>4</b> = กรองคู่ที่มี 4 (54,43,48...), <b>45</b> = คู่ที่มี 4 หรือ 5 (OR) / ต้องมีทั้ง 4และ5 (AND) - กรองทั้งตารางคู่และชุด 3 หลักที่สร้างจากคู่</div>
+</div>
 <div id="bpPairsDisplay"></div>
 </div>
 
@@ -496,7 +512,39 @@ function runBlueprint(){
     for(let i=0;i<pairBase.length;i++){ for(let j=i+1;j<pairBase.length;j++){ const a=pairBase[i], b=pairBase[j]; const str=`${a}${b}`; if(seen.has(str)) continue; const dr=getDR(a+b); if(drTargets.length && !drTargets.includes(dr)) continue; seen.add(str); orderedPairs.push({a,b,str,dr,i, isDouble:false}); } }
     if(tglDouble){ for(let i=0;i<pairBase.length;i++){ const a=pairBase[i]; const str=`${a}${a}`; if(seen.has(str)) continue; const dr=getDR(a+a); if(drTargets.length && !drTargets.includes(dr)) continue; seen.add(str); orderedPairs.push({a,b:a,str,dr,i, isDouble:true}); } }
   }
-  LAST_PAIRS=orderedPairs;
+    LAST_PAIRS=orderedPairs;
+  // === STORE ORIGINAL PAIRS FOR FILTER ===
+  window.ORIGINAL_ORDERED_PAIRS = orderedPairs.slice();
+  // === APPLY NEW PAIR FILTER (กรอบแดง) - ล็อค OR 1-3 หลัก ===
+  try{
+    let pairFilterEl=document.getElementById('pairLockIndependent');
+    if(pairFilterEl){
+      let pairDigits=parsePairIndependentDigits(pairFilterEl.value);
+      let pairMode=document.querySelector('input[name="pairIndependentMode"]:checked')?.value || 'or';
+      if(pairDigits.length>0){
+        let beforeCount=orderedPairs.length;
+        if(pairMode==='or'){
+          orderedPairs=orderedPairs.filter(p=> pairDigits.some(d=> p.a===d || p.b===d));
+        }else{
+          orderedPairs=orderedPairs.filter(p=> pairDigits.every(d=> p.a===d || p.b===d));
+        }
+        // update stats UI
+        let statEl=document.getElementById('pairFilterStats');
+        if(statEl){
+          if(orderedPairs.length===0) statEl.innerHTML=`❌ 0คู่ จาก ${beforeCount} (ล็อค:${pairDigits.join('')},${pairMode.toUpperCase()})`;
+          else statEl.innerHTML=`🔎 ${orderedPairs.length}คู่ จาก ${beforeCount} (ล็อค:${pairDigits.join('')},${pairMode.toUpperCase()})`;
+          statEl.style.background=orderedPairs.length===0?'#fee2e2':'#fef3c7';
+          statEl.style.borderColor=orderedPairs.length===0?'#fecaca':'#fcd34d';
+          statEl.style.color=orderedPairs.length===0?'#dc2626':'#92400e';
+        }
+      }else{
+        let statEl=document.getElementById('pairFilterStats');
+        if(statEl) statEl.innerHTML=`${orderedPairs.length}คู่ (ไม่กรอง)`;
+      }
+    }
+  }catch(e){ console.log('pair filter error', e); }
+  // === END PAIR FILTER ===
+
   const pairBaseLabel = isForcedMode ? 'บังคับ PK (ละเลย r)' : (pairIsPool ? 'Pool' : 'นอก Pool');
   const isForced = isForcedMode;
   document.getElementById('crossSummary').innerHTML = `<span class="badge pool">Pool:<span class="num-pool">${pool.join('')||'-'}</span>(${pool.length})${isForcedMode?'':(pairIsPool?' 🔗คู่':' เดี่ยว')}</span> <span class="badge outside">นอก:<span class="num-outside">${outsideNormal.join('')||'-'}</span>(${outsideNormal.length})${isForcedMode?' 🔗เดี่ยวเติม':(!pairIsPool?' 🔗คู่':' เดี่ยว')}</span> <span class="badge gray">${orderedPairs.length}คู่</span>${isForced?` <span class="badge" style="background:#fef08a;color:#000;border:1px solid #ca8a04;cursor:pointer" onclick="clearForcedPairs()">🔒 บังคับจาก PK: ${window.FORCED_PAIRS_FROM_PK.join(',')} ✕ ล้าง (r ถูกละเลย)</span>`:''}${isForcedMode?` <span class="badge" style="background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc">ℹ️ โหมดบังคับ: ใช้ นอก Pool เป็นตัวเติมเสมอ ไม่สน r1/r2 → ชุด 562 ไม่หาย</span>`:''}`;
@@ -518,7 +566,22 @@ function runBlueprint(){
     }
     const freq={}; const appear=[]; orderedPairs.forEach(p=>{ freq[p.dr]=(freq[p.dr]||0)+1; if(!appear.includes(p.dr)) appear.push(p.dr); }); let maxC=0; Object.values(freq).forEach(c=>{ if(c>maxC) maxC=c; }); const topDRs=Object.keys(freq).filter(d=>freq[d]==maxC).map(Number).sort((a,b)=>a-b); const otherDRs=appear.filter(d=>!topDRs.includes(d));
     let linesHtml = lines.map(l=> `• ${l}`).join('<br>');
-    pairHtml = `<div class="pair-wrap"><div class="pair-head"><span>สร้างคู่ - ตารางเดียวรวม (จากกลุ่ม${pairBaseLabel}) ${tglDouble?'(รวมเบิ้ล * )':''}</span><span>${orderedPairs.length}คู่</span></div><div class="pair-body">${linesHtml}</div></div><div class="dr-box"><span>DR =</span> <span class="dr-gold">${topDRs.join(' ')}</span> <span style="font-size:9px">(${maxC}คู่) สูงสุด</span><div style="margin-top:3px">= ${otherDRs.join(',')}</div></div>`;
+    // === NEW: ปุ่มล้างในวงน้ำเงิน (กรอบแดง) ===
+    let hasPairFilter = false;
+    try{
+      let pf=document.getElementById('pairLockIndependent');
+      hasPairFilter = pf && pf.value.trim()!=='';
+    }catch(e){}
+    let isForcedNow = (window.FORCED_PAIRS_FROM_PK && window.FORCED_PAIRS_FROM_PK.length>0);
+    let clearBtns = '';
+    if(hasPairFilter || isForcedNow){
+      clearBtns = `<span style="display:flex;gap:4px;align-items:center;">`;
+      if(hasPairFilter) clearBtns += `<button class="btn" onclick="clearPairIndependentFilter()" style="font-size:8px;padding:2px 8px;height:22px;background:#fffbeb;border:1px solid #f59e0b;color:#b45309;border-radius:999px;">🧹 ล้างฟิลเตอร์คู่</button>`;
+      if(isForcedNow) clearBtns += `<button class="btn" onclick="clearForcedPairs()" style="font-size:8px;padding:2px 8px;height:22px;background:#fef2f2;border:1px solid #fecaca;color:#dc2626;border-radius:999px;">🔓 ล้างคู่บังคับ PK</button>`;
+      if(hasPairFilter && isForcedNow) clearBtns += `<button class="btn" onclick="clearPairIndependentFilter(); setTimeout(()=>clearForcedPairs(),50);" style="font-size:8px;padding:2px 8px;height:22px;background:#f3f4f6;border:1px solid #d1d5db;color:#374151;border-radius:999px;">🗑️ ล้างทั้งหมด</button>`;
+      clearBtns += `</span>`;
+    }
+    pairHtml = `<div class="pair-wrap"><div class="pair-head" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;"><span>สร้างคู่ - ตารางเดียวรวม (จากกลุ่ม${pairBaseLabel}) ${tglDouble?'(รวมเบิ้ล * )':''}</span><span style="display:flex;gap:6px;align-items:center;"><span>${orderedPairs.length}คู่</span>${clearBtns}</span></div><div class="pair-body">${linesHtml}</div></div><div class="dr-box"><span>DR =</span> <span class="dr-gold">${topDRs.join(' ')}</span> <span style="font-size:9px">(${maxC}คู่) สูงสุด</span><div style="margin-top:3px">= ${otherDRs.join(',')}</div></div>`;
   }
   document.getElementById('bpPairsDisplay').innerHTML=pairHtml;
 
@@ -621,6 +684,30 @@ function applyAllFilters(){
   if(stat){ stat.innerHTML = parts.length ? `🔍 ${parts.join(' + ')} → เหลือ <b>${filtered.length}</b> ชุด จาก ${ORIGINAL_TRIPLES.length}` : `แสดงทั้งหมด ${filtered.length} ชุด ${tglDouble?'(เฉพาะเบิ้ล)':'(ไม่เบิ้ล)'}`; }
 }
 function clearIndependentFilter(){ document.getElementById('lockIndependent').value=''; document.querySelector('input[name="independentMode"][value="or"]').checked=true; applyAllFilters(); }
+
+// === NEW: ฟิลเตอร์กรองคู่ (กรอบแดง) - ล็อค OR 1-3 หลัก ===
+function parsePairIndependentDigits(str){ if(!str) return []; let cleaned=str.replace(/[^0-9]/g,''); let digits=[]; for(let ch of cleaned){ let n=parseInt(ch); if(!isNaN(n)) digits.push(n); } return [...new Set(digits)]; }
+function getPairLockFilter(){
+  let el=document.getElementById('pairLockIndependent');
+  if(!el) return {digits:[], mode:'or'};
+  let digits=parsePairIndependentDigits(el.value);
+  let mode=document.querySelector('input[name="pairIndependentMode"]:checked')?.value || 'or';
+  return {digits, mode};
+}
+function applyPairFilter(){
+  // เรียก runBlueprint ใหม่เพื่อกรองคู่ใหม่ (จะอ่านค่าฟิลเตอร์คู่เอง)
+  if(typeof runBlueprint==='function') runBlueprint();
+}
+function clearPairIndependentFilter(){
+  let el=document.getElementById('pairLockIndependent');
+  if(el) el.value='';
+  let orRadio=document.querySelector('input[name="pairIndependentMode"][value="or"]');
+  if(orRadio) orRadio.checked=true;
+  if(typeof runBlueprint==='function') runBlueprint();
+}
+window.clearPairIndependentFilter=clearPairIndependentFilter;
+window.applyPairFilter=applyPairFilter;
+
 function clearAllExtraFilters(){ document.getElementById('finalDrTarget').value=''; document.getElementById('oddEvenFilter').value=''; const sm=document.getElementById('sumMin'); const sx=document.getElementById('sumMax'); if(sm) sm.value=''; if(sx) sx.value=''; applyAllFilters(); }
 function clearSumFilter(){ const sm=document.getElementById('sumMin'); const sx=document.getElementById('sumMax'); if(sm) sm.value=''; if(sx) sx.value=''; applyAllFilters(); }
 function renderFilteredIndependent(){
@@ -1514,6 +1601,9 @@ function clearAllPKData(){
   if(finalDr) finalDr.value='';
   const sm=document.getElementById('sumMin'); const sx=document.getElementById('sumMax'); if(sm) sm.value=''; if(sx) sx.value='';
   const lockInd2=document.getElementById('lockIndependent'); if(lockInd2) lockInd2.value='';
+  const pairLockEl=document.getElementById('pairLockIndependent'); if(pairLockEl) pairLockEl.value='';
+  const pairOr=document.querySelector('input[name="pairIndependentMode"][value="or"]'); if(pairOr) pairOr.checked=true;
+
   if(typeof runBlueprint==='function') runBlueprint();
   if(window.runBlueprint) window.runBlueprint();
   if(typeof applyAllFilters==='function') applyAllFilters();
