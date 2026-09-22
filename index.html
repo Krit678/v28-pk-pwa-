@@ -387,7 +387,7 @@ textarea{width:100%;font-family:'JetBrains Mono';font-size:12px;font-weight:600;
 <div style="background:linear-gradient(135deg,#eff6ff,#dbeafe);border:1.5px solid #3b82f6;border-radius:10px;padding:8px;margin-bottom:8px">
   <div style="font-size:10px;font-weight:800;color:#1e40af;margin-bottom:4px">🔒 ฟิลเตอร์ล็อคคู่ อิสระ 1-2 หลัก (OR) - สำหรับตารางรวมเดี่ยว</div>
   <div style="display:flex; gap:6px; margin-bottom:6px;">
-    <input id="pairLockFilter" class="input" type="text" placeholder="เช่น 4 หรือ 45 (ล็อคคู่ที่มีเลขนี้)" oninput="runBlueprint()" style="flex:1;border:1.5px solid #3b82f6;">
+    <input id="pairLockFilter" class="input" type="text" placeholder="เช่น 4 หรือ 45 หรือ 439/4397 (AND=ระบบคู่) (ล็อคคู่ที่มีเลขนี้)" oninput="runBlueprint()" style="flex:1;border:1.5px solid #3b82f6;">
     <button class="btn" onclick="document.getElementById('pairLockFilter').value='';runBlueprint()" style="height:32px;font-size:9px">ล้าง</button>
   </div>
   <div style="display:flex; gap:6px; flex-wrap:wrap;">
@@ -401,9 +401,9 @@ textarea{width:100%;font-family:'JetBrains Mono';font-size:12px;font-weight:600;
 </div>
 
 <div class="card filter-card">
-<h2 class="card-title">🔍 ฟิลเตอร์ล็อคอิสระ 1-3 หลัก (OR)</h2>
+<h2 class="card-title">🔍 ฟิลเตอร์ล็อคอิสระ 1-4 หลัก (OR/AND คู่)</h2>
 <div style="display:flex; gap:6px; margin-bottom:6px;">
-<input id="lockIndependent" class="input" type="text" placeholder="เช่น 4 หรือ 45" oninput="applyAllFilters()" style="flex:1;">
+<input id="lockIndependent" class="input" type="text" placeholder="เช่น 4 หรือ 45 หรือ 439/4397 (AND=ระบบคู่)" oninput="applyAllFilters()" style="flex:1;">
 <button class="btn" onclick="clearIndependentFilter()" style="height:32px;">ล้าง</button>
 </div>
 <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:6px;">
@@ -531,8 +531,22 @@ function runBlueprint(){
           // OR: มีเลขใดเลขหนึ่งจากที่ล็อค
           return pairLockDigits.some(d=> pairDigits.includes(d));
         } else {
-          // AND: มีครบทุกเลขที่ล็อค (เช่น ล็อค 45 ต้องมีทั้ง 4 และ 5)
-          return pairLockDigits.every(d=> pairDigits.includes(d));
+          // AND ใหม่แบบคู่: ป้อน 6342 => คู่กรอง 63,64,62,34,32,42 | ป้อน 75932 => 10คู่
+          // คู่ต้องตรงกับคู่ใดคู่หนึ่งจากคู่กรอง ไม่สนตำแหน่ง เช่น 43 ตรงกับ 34
+          if(pairLockDigits.length===1){
+            return pairLockDigits.some(d=> pairDigits.includes(d));
+          } else {
+            let filterPairs = new Set();
+            for(let i=0;i<pairLockDigits.length;i++){
+              for(let j=i+1;j<pairLockDigits.length;j++){
+                let x=pairLockDigits[i], y=pairLockDigits[j];
+                let key = Math.min(x,y)+','+Math.max(x,y);
+                filterPairs.add(key);
+              }
+            }
+            let pairKey = Math.min(p.a,p.b)+','+Math.max(p.a,p.b);
+            return filterPairs.has(pairKey);
+          }
         }
       });
     }
@@ -545,15 +559,25 @@ function runBlueprint(){
   const showPairs = filteredPairs.length;
   document.getElementById('crossSummary').innerHTML = `<span class="badge pool">Pool:<span class="num-pool">${pool.join('')||'-'}</span>(${pool.length})${isForcedMode?'':(pairIsPool?' 🔗คู่':' เดี่ยว')}</span> <span class="badge outside">นอก:<span class="num-outside">${outsideNormal.join('')||'-'}</span>(${outsideNormal.length})${isForcedMode?' 🔗เดี่ยวเติม':(!pairIsPool?' 🔗คู่':' เดี่ยว')}</span> <span class="badge gray">${totalPairs}คู่${showPairs!==totalPairs?` → กรองเหลือ ${showPairs}คู่`:''}</span>${isForced?` <span class="badge" style="background:#fef08a;color:#000;border:1px solid #ca8a04;cursor:pointer" onclick="clearForcedPairs()">🔒 บังคับจาก PK: ${window.FORCED_PAIRS_FROM_PK.join(',')} ✕ ล้าง (r ถูกละเลย)</span>`:''}${isForcedMode?` <span class="badge" style="background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc">ℹ️ โหมดบังคับ: ใช้ นอก Pool เป็นตัวเติมเสมอ ไม่สน r1/r2 → ชุด 562 ไม่หาย</span>`:''}`;
   
-  // อัปเดตสถิติฟิลเตอร์คู่
+  // อัปเดตสถิติฟิลเตอร์คู่ - AND ใหม่แบบคู่
   try{
     const statsEl = document.getElementById('pairFilterStats');
     if(statsEl){
       if(pairLockDigits.length>0){
-        statsEl.innerHTML = `🔒 ล็อคคู่: ${pairLockDigits.join(',')} • โหมด ${pairLockMode.toUpperCase()} • จาก ${totalPairs}คู่ → เหลือ ${showPairs}คู่ (${Math.round(showPairs/totalPairs*100)}%) • ${showPairs===0?'ไม่มีคู่ที่ตรงเงื่อนไข':`แสดงคู่ที่มีเลข ${pairLockDigits.join('/')} ${pairLockMode==='or'?'อย่างใดอย่างหนึ่ง':'ครบทุกตัว'}`}`;
+        if(pairLockMode==='and' && pairLockDigits.length>1){
+          let pairList=[];
+          for(let i=0;i<pairLockDigits.length;i++){
+            for(let j=i+1;j<pairLockDigits.length;j++){
+              pairList.push(`${pairLockDigits[i]}${pairLockDigits[j]}`);
+            }
+          }
+          statsEl.innerHTML = `🔒 ล็อคคู่ AND คู่: ${pairList.join(',')} (${pairLockDigits.join('')}→${pairList.length}คู่) • โหมด AND คู่ • จาก ${totalPairs}คู่ → เหลือ ${showPairs}คู่ (${Math.round(showPairs/totalPairs*100)}%) • ${showPairs===0?'ไม่มีคู่ที่ตรงกับ '+pairList.join('/'):'แสดงคู่ที่ตรงกับคู่ใดคู่หนึ่ง '+pairList.join('/')} (ไม่สนตำแหน่ง)`;
+        } else {
+          statsEl.innerHTML = `🔒 ล็อคคู่: ${pairLockDigits.join(',')} • โหมด ${pairLockMode.toUpperCase()} • จาก ${totalPairs}คู่ → เหลือ ${showPairs}คู่ (${Math.round(showPairs/totalPairs*100)}%) • ${showPairs===0?'ไม่มีคู่ที่ตรงเงื่อนไข':`แสดงคู่ที่มีเลข ${pairLockDigits.join('/')} ${pairLockMode==='or'?'อย่างใดอย่างหนึ่ง':'ครบทุกตัว'}`}`;
+        }
         statsEl.style.display='block';
       } else {
-        statsEl.innerHTML = `แสดงทั้งหมด ${totalPairs}คู่ • พิมพ์เลข 1-2 หลักเพื่อล็อคคู่ เช่น 4 หรือ 45`;
+        statsEl.innerHTML = `แสดงทั้งหมด ${totalPairs}คู่ • พิมพ์เลข 1-2 หลัก OR หรือ 2-5 หลัก AND คู่ เช่น 4 หรือ 45 หรือ 6342/75932 (AND=ระบบคู่)`;
         statsEl.style.display='block';
       }
     }
@@ -674,17 +698,79 @@ function applyAllFilters(){
   let sumMin = sumMinVal!=='' && sumMinVal!==null ? parseInt(sumMinVal) : null;
   let sumMax = sumMaxVal!=='' && sumMaxVal!==null ? parseInt(sumMaxVal) : null;
   let anyFilterActive = lockDigits.length>0 || finalDrTargets.length>0 || oddEvenTarget!==null || sumMin!==null || sumMax!==null;
-  let base = anyFilterActive ? ORIGINAL_TRIPLES.filter(obj=>{ let [a,b,c]=obj.nums; if(lockDigits.length){ let ok = mode==='or' ? lockDigits.some(d=>a===d||b===d||c===d) : lockDigits.every(d=>a===d||b===d||c===d); if(!ok) return false; } if(finalDrTargets.length){ let dr=getDR(a+b+c); if(!finalDrTargets.includes(dr)) return false; } if(oddEvenTarget!==null){ let oddCount=[a,b,c].filter(d=>d%2!==0).length; if(oddCount!==oddEvenTarget) return false; } let sum=a+b+c; if(sumMin!==null && sum<sumMin) return false; if(sumMax!==null && sum>sumMax) return false; return true; }) : ORIGINAL_TRIPLES.slice();
+  let base = anyFilterActive ? ORIGINAL_TRIPLES.filter(obj=>{ 
+    let [a,b,c]=obj.nums; 
+    if(lockDigits.length){ 
+      let ok;
+      if(mode==='or'){
+        ok = lockDigits.some(d=>a===d||b===d||c===d);
+      } else {
+        // AND ใหม่แบบคู่: ป้อน 439 => คู่กรอง 43,49,39 | ป้อน 4397 => 43,49,47,39,37,97
+        if(lockDigits.length===1){
+          ok = lockDigits.some(d=>a===d||b===d||c===d);
+        } else {
+          let filterPairs = new Set();
+          for(let i=0;i<lockDigits.length;i++){
+            for(let j=i+1;j<lockDigits.length;j++){
+              let x=lockDigits[i], y=lockDigits[j];
+              let key = Math.min(x,y)+','+Math.max(x,y);
+              filterPairs.add(key);
+            }
+          }
+          let triplePairs = [
+            Math.min(a,b)+','+Math.max(a,b),
+            Math.min(a,c)+','+Math.max(a,c),
+            Math.min(b,c)+','+Math.max(b,c)
+          ];
+          ok = triplePairs.some(p=>filterPairs.has(p));
+        }
+      }
+      if(!ok) return false; 
+    } 
+    if(finalDrTargets.length){ let dr=getDR(a+b+c); if(!finalDrTargets.includes(dr)) return false; } 
+    if(oddEvenTarget!==null){ let oddCount=[a,b,c].filter(d=>d%2!==0).length; if(oddCount!==oddEvenTarget) return false; } 
+    let sum=a+b+c; 
+    if(sumMin!==null && sum<sumMin) return false; 
+    if(sumMax!==null && sum>sumMax) return false; 
+    return true; 
+  }) : ORIGINAL_TRIPLES.slice();
   const tglDouble=document.getElementById('tglDouble').checked;
   let filtered = tglDouble ? base.filter(o=> hasDuplicate(o.nums[0],o.nums[1],o.nums[2])) : base.filter(o=> !hasDuplicate(o.nums[0],o.nums[1],o.nums[2]));
   GLOBAL_TRIPLES=filtered;
   let drGroups={}; filtered.forEach(t=>{ let d=getDR(t.nums.reduce((a,b)=>a+b,0)); if(!drGroups[d]) drGroups[d]=[]; drGroups[d].push(t); });
   GLOBAL_DR_GROUPS=drGroups;
   renderFilteredIndependent();
-  let parts=[]; if(lockDigits.length) parts.push(`ล็อค:${lockDigits.join(',')}`); if(finalDrTargets.length) parts.push(`DR:${finalDrTargets.join(',')}`); if(oddEvenTarget!==null) parts.push(`คี่${oddEvenTarget}`); if(sumMin!==null || sumMax!==null){ if(sumMin!==null && sumMax!==null) parts.push(`ผลรวม${sumMin}-${sumMax}`); else if(sumMin!==null) parts.push(`ผลรวม≥${sumMin}`); else parts.push(`ผลรวม≤${sumMax}`); }
+  let parts=[]; 
+  if(lockDigits.length){
+    if(mode==='and' && lockDigits.length>1){
+      let pairList=[];
+      for(let i=0;i<lockDigits.length;i++){
+        for(let j=i+1;j<lockDigits.length;j++){
+          pairList.push(`${lockDigits[i]}${lockDigits[j]}`);
+        }
+      }
+      parts.push(`ล็อค AND คู่:${pairList.join(',')} (${lockDigits.join('')}→${pairList.length}คู่)`);
+    } else {
+      parts.push(`ล็อค:${lockDigits.join(',')} (${mode})`);
+    }
+  }
+  if(finalDrTargets.length) parts.push(`DR:${finalDrTargets.join(',')}`); 
+  if(oddEvenTarget!==null) parts.push(`คี่${oddEvenTarget}`); 
+  if(sumMin!==null || sumMax!==null){ 
+    if(sumMin!==null && sumMax!==null) parts.push(`ผลรวม${sumMin}-${sumMax}`); 
+    else if(sumMin!==null) parts.push(`ผลรวม≥${sumMin}`); 
+    else parts.push(`ผลรวม≤${sumMax}`); 
+  }
   if(tglDouble) parts.unshift('เบิ้ลเท่านั้น');
   let stat=document.getElementById('filterStats');
-  if(stat){ stat.innerHTML = parts.length ? `🔍 ${parts.join(' + ')} → เหลือ <b>${filtered.length}</b> ชุด จาก ${ORIGINAL_TRIPLES.length}` : `แสดงทั้งหมด ${filtered.length} ชุด ${tglDouble?'(เฉพาะเบิ้ล)':'(ไม่เบิ้ล)'}`; }
+  if(stat){ 
+    if(mode==='and' && lockDigits.length>1){
+      let pairCount = lockDigits.length*(lockDigits.length-1)/2;
+      stat.innerHTML = parts.length ? `🔍 ${parts.join(' + ')} → เหลือ <b>${filtered.length}</b> ชุด จาก ${ORIGINAL_TRIPLES.length} | AND คู่: มีคู่ใดคู่หนึ่งจาก ${pairCount}คู่ (ไม่สนตำแหน่ง) เช่น 438มี43, 479มี49, 903มี93` : `แสดงทั้งหมด ${filtered.length} ชุด ${tglDouble?'(เฉพาะเบิ้ล)':'(ไม่เบิ้ล)'}`; 
+    } else {
+      stat.innerHTML = parts.length ? `🔍 ${parts.join(' + ')} → เหลือ <b>${filtered.length}</b> ชุด จาก ${ORIGINAL_TRIPLES.length}` : `แสดงทั้งหมด ${filtered.length} ชุด ${tglDouble?'(เฉพาะเบิ้ล)':'(ไม่เบิ้ล)'}`; 
+    }
+  }
 }
 function clearIndependentFilter(){ document.getElementById('lockIndependent').value=''; document.querySelector('input[name="independentMode"][value="or"]').checked=true; applyAllFilters(); }
 function clearAllExtraFilters(){ document.getElementById('finalDrTarget').value=''; document.getElementById('oddEvenFilter').value=''; const sm=document.getElementById('sumMin'); const sx=document.getElementById('sumMax'); if(sm) sm.value=''; if(sx) sx.value=''; applyAllFilters(); }
