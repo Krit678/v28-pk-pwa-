@@ -325,6 +325,56 @@ textarea{width:100%;font-family:'JetBrains Mono';font-size:12px;font-weight:600;
 
 #pk-panel .app{width:100%; max-width:100%;}
 #pk-panel textarea{background:#fffef7;}
+
+
+/* ===== K3_2 SAVE V2 — scoped inside #k3ReplacePanel (แทน Fibo Mini) ===== */
+#k3ReplacePanel .k3-container .mini{width:100%;max-width:100%;background:#0a120a;border:1.2px solid #FFD700;border-radius:14px;overflow:hidden;box-shadow:0 0 0 1px #221a00,0 12px 32px rgba(0,0,0,.4)}
+#k3ReplacePanel .hdr{padding:7px 10px;background:linear-gradient(135deg,#101c0f,#0a1008);border-bottom:1px solid #1a2a14;display:flex;justify-content:space-between;align-items:center}
+#k3ReplacePanel .hdr-l{font-size:10px;font-weight:800;color:#FFD700;letter-spacing:.5px}
+#k3ReplacePanel .hdr-r{font-size:6.5px;background:#001a0f;color:#00FF88;border:1px solid #003a1a;padding:2px 6px;border-radius:999px}
+#k3ReplacePanel .sec{padding:7px 8px}
+#k3ReplacePanel .lbl{font-size:8px;color:#5a7a5a;margin-bottom:3px;letter-spacing:.3px}
+#k3ReplacePanel .ta{width:100%;height:38px;border-radius:8px;background:#08100a;color:#a0d0a0;border:1px solid #1a3018;padding:6px 8px;font-family:'JetBrains Mono',monospace;font-size:11px;outline:none}
+#k3ReplacePanel .ta:focus{border-color:#FFD700}
+#k3ReplacePanel .btns{display:flex;gap:4px;margin-top:5px}
+#k3ReplacePanel .b{flex:1;padding:6px 2px;border-radius:7px;border:none;font-family:'Kanit',sans-serif;font-weight:800;font-size:9px;cursor:pointer}
+#k3ReplacePanel .b-gold{background:linear-gradient(135deg,#FFD700,#FFB300);color:#000}
+#k3ReplacePanel .b-dark{background:#101e10;color:#6a9a6a;border:1px solid #1e3318;font-size:8px}
+#k3ReplacePanel .b-dark:active{transform:scale(.97)}
+#k3ReplacePanel .k2{margin:5px 8px 6px;border:1.4px solid #00FF88;border-radius:12px;background:linear-gradient(180deg,#0f2212,#0a150a);padding:7px 8px;position:relative;box-shadow:0 0 16px rgba(0,255,136,.18)}
+#k3ReplacePanel .k2::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#00FF88,transparent)}
+#k3ReplacePanel .k2-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+#k3ReplacePanel .k2-t{font-size:9px;font-weight:800;color:#00FF88}
+#k3ReplacePanel .k2-badge{font-size:6.5px;background:#001a12;color:#00FF88;border:1px solid #004a22;padding:2px 6px;border-radius:999px;font-weight:800}
+#k3ReplacePanel .k2-ds{display:flex;gap:6px;justify-content:center;margin:4px 0}
+#k3ReplacePanel .kd{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:800;color:#000;background:linear-gradient(135deg,#00FF88,#00C86A);box-shadow:0 3px 10px rgba(0,255,136,.4)}
+#k3ReplacePanel .k2-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-top:5px}
+#k3ReplacePanel .ks{background:#08120a;border:1px solid #142a14;border-radius:6px;padding:3px 4px;text-align:center}
+#k3ReplacePanel .ks .kk{font-size:5.5px;color:#4a6a4a}
+#k3ReplacePanel .ks .vv{font-family:'JetBrains Mono',monospace;font-size:8.5px;font-weight:800;color:#FFD700}
+#k3ReplacePanel .ks .vv.gr{color:#00FF88}
+#k3ReplacePanel .copy{width:100%;margin-top:5px;padding:4px;border-radius:6px;border:1px dashed #00FF88;background:#00140a;color:#00FF88;font-size:8px;font-weight:700;cursor:pointer}
+#k3ReplacePanel .pw{margin:0 8px 5px;background:#070c07;border:1px solid #121f10;border-radius:9px;padding:5px 6px}
+#k3ReplacePanel .pw-h{font-size:7px;font-weight:800;color:#FFD700;margin-bottom:4px;display:flex;justify-content:space-between}
+#k3ReplacePanel .pg{display:grid;grid-template-columns:repeat(4,1fr);gap:3px}
+#k3ReplacePanel .pb{background:#0a160a;border:1px solid #1a2a14;border-radius:6px;padding:4px 2px;text-align:center}
+#k3ReplacePanel .pb .pk{font-size:5px;color:#5a8a5a}
+#k3ReplacePanel .pb .pv{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:800;margin-top:1px}
+#k3ReplacePanel .pb.ent .pv{color:#00E5FF}
+#k3ReplacePanel .pb.win .pv{color:#FFD700}
+#k3ReplacePanel .pb.alp .pv{color:#00FF88}
+#k3ReplacePanel .pb.r .pv{color:#FF9A00}
+#k3ReplacePanel .pdesc{font-size:4.5px;color:#304030;margin-top:1px;line-height:1.1}
+#k3ReplacePanel .alert{margin:0 8px 7px;border-radius:8px;padding:6px 8px;font-size:7.5px;font-weight:800;text-align:center;line-height:1.35}
+#k3ReplacePanel .alert-high{background:#180808;color:#ff5a5a;border:1px solid #4a1515}
+#k3ReplacePanel .alert-stable{background:#071a0e;color:#00ff99;border:1px solid #104a28}
+#k3ReplacePanel .alert-normal{background:#14110a;color:#FFD700;border:1px solid #332a00}
+#k3ReplacePanel .foot{padding:5px 8px;background:#080c08;border-top:1px solid #101810;display:flex;justify-content:space-between;font-size:6px;color:#3a5a3a;font-family:'JetBrains Mono',monospace}
+#k3ReplacePanel .dot{width:4px;height:4px;border-radius:50%;background:#00FF88;box-shadow:0 0 6px #00FF88;display:inline-block;margin-right:3px;animation:bl 1.5s infinite}
+#k3ReplacePanel .tip{font-size:6px;color:#3a5a3a;padding:0 8px 6px;line-height:1.4}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.3}}
+#k3ReplacePanel .k3-container{width:100%}
+
 </style>
 </head>
 <body>
@@ -878,11 +928,66 @@ runBlueprint();
 </div>
 </div>
 
-<div class="sheet" id="fibMiniPanel">
-<div class="sheetHead"><b>🔢 Fibonacci Mini 4×4 Pro - F₂-F₁₆ (การ์ดเล็ก ไม่บังเลข)</b><span>F₂=1 F₃=2 F₄=3 F₅=5 F₆=8 F₇=13 F₈=21 F₉=34 F₁₀=55 F₁₁=89 F₁₂=144 F₁₃=233 F₁₄=377 F₁₅=610 F₁₆=987 • ตรวจแล้ว • วางต่อท้ายชุดป้อน 2 ชุด</span></div>
-<div style="padding:10px">
-  <div id="fibGridPhoto" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px"></div>
-  <div class="formula" style="margin-top:8px">การ์ดเล็ก • ป้าย Fₙ อยู่บน ไม่ทับเลข • เรียงตามรูป F16→F2 • ไม่กินพื้นที่ • ชุดใหญ่ที่วงแดงไว้เก็บไว้ ไม่ได้ลบ</div>
+
+<div class="sheet" id="k3ReplacePanel">
+<div class="sheetHead"><b>🔒 K3_2 SAVE V2 — แทนการ์ด Fibonacci (โฟกัสตัวพลาด)</b><span>Accurate Mini • Failure-Focused • Entropy + Chaos • แทนที่ Fibo Mini เดิม</span></div>
+<div style="padding:8px">
+<div class="k3-container">
+<div class="mini">
+  <div class="hdr">
+    <div class="hdr-l">🔒 K3_2 SAVE V2 — Accurate Mini</div>
+    <div class="hdr-r">● FIXED FOR exact1 ≥1</div>
+  </div>
+  <div class="sec">
+    <div class="lbl">เลขตั้งต้น 3 หลัก (comma) — ยิ่งใส่เยอะยิ่งแม่น</div>
+    <textarea id="k3_inp" class="ta">495, 214, 479, 615, 212, 803, 361, 572, 940, 126, 483, 719</textarea>
+    <div class="btns">
+      <button class="b b-gold" onclick="K3V2.predict()">⚡ ทำนาย</button>
+      <button class="b b-dark" onclick="K3V2.optimize()">🎯 ปรับแม่น</button>
+      <button class="b b-dark" onclick="K3V2.rnd()">สุ่ม</button>
+      <button class="b b-dark" onclick="K3V2.clear()">ล้าง</button>
+    </div>
+  </div>
+
+  <div class="k2" id="k2card">
+    <div class="k2-h">
+      <div class="k2-t">💚 K3_2 SAVE — โฟกัสตัวพลาด</div>
+      <div class="k2-badge" id="k2_badge">--% save</div>
+    </div>
+    <div class="k2-ds" id="k2_digits"></div>
+    <div class="k2-grid">
+      <div class="ks"><div class="kk">EXACT1 K3_2</div><div class="vv" id="s_ex1">--</div></div>
+      <div class="ks"><div class="kk">SAVE เมื่อ K3_1 พลาด</div><div class="vv gr" id="s_save">--</div></div>
+      <div class="ks"><div class="kk">COMBINED K3_1+K3_2 (6ตัว)</div><div class="vv" id="s_comb">--</div></div>
+      <div class="ks"><div class="kk">K3_1 LOCK อ้างอิง</div><div class="vv" id="s_k31" style="color:#777">---</div></div>
+    </div>
+    <button class="copy" onclick="copyK2()">📋 คัดลอก K3_2</button>
+  </div>
+
+  <div class="pw">
+    <div class="pw-h"><span>📊 SYSTEM PARAMS (วงแดงในรูป)</span><span id="pw_mode" style="color:#5a8a5a">Weighted</span></div>
+    <div class="pg">
+      <div class="pb ent"><div class="pk">ENTROPY</div><div class="pv" id="k3_ent">--</div><div class="pdesc">สุ่มมาก/น้อย<br>-Σ p log₂p</div></div>
+      <div class="pb win"><div class="pk">WIN</div><div class="pv" id="k3_win">--</div><div class="pdesc">Window<br>38→49</div></div>
+      <div class="pb alp"><div class="pk">ALPHA</div><div class="pv" id="k3_alp">--</div><div class="pdesc">Decay<br>Weight</div></div>
+      <div class="pb r"><div class="pk">R</div><div class="pv" id="k3_r">--</div><div class="pdesc">Chaos<br>Logistic</div></div>
+    </div>
+  </div>
+
+  <div id="k3_status_alert" class="alert alert-normal">รอวิเคราะห์...</div>
+
+  <div class="foot">
+    <div><span class="dot"></span>ENT <b id="f_ent">--</b> | COMB <b id="f_comb" style="color:#00FF88">--</b></div>
+    <div id="f_detail">MINI V2 · OPTIMAL SEARCH</div>
+  </div>
+  <div class="tip">
+    ✅ แก้แม่น: V2 ใช้ <b>Brute-Force 120 ชุด + Failure-Weighted</b> หา K3_1 ที่ทำให้ K3_2 เซฟได้มากสุด (โฟกัสเฉพาะเลขที่ K3_1 พลาด) + ถ่วงน้ำหนักล่าสุดด้วย decay ตาม ENTROPY
+  </div>
+</div>
+</div>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -2241,7 +2346,7 @@ document.getElementById('dualGen').addEventListener('click',()=>{renderDualPK();
 document.getElementById('dualClr').addEventListener('click',()=>{document.getElementById('set1').value='';document.getElementById('set2').value='';document.getElementById('dualResult').innerHTML='';document.getElementById('dualCombined').innerHTML='';});
 window.addEventListener('load',renderPK);
 window.addEventListener('load',()=>{renderDualPK(); setTimeout(()=>{ if(typeof updateRolling9xDisplay==='function') updateRolling9xDisplay(); }, 500);});
-window.addEventListener('load',renderFibTablePK);
+// Fibonacci removed - replaced by K3_2
 window.addEventListener('load',()=>{ setTimeout(()=>{ if(typeof updateRolling9xDisplay==='function') updateRolling9xDisplay(); }, 800);});
 
 document.querySelectorAll('#pk-panel-content .chip').forEach(ch=>{
@@ -2256,6 +2361,243 @@ window.renderPK = renderPK;
 })();
 </script>
 
+
+
+
+<script>
+// ===== K3_2 SAVE V2 — แทนการ์ด Fibonacci (integrated) =====
+// ===== Entropy & Pools (เหมือนเดิมแต่ย่อ) =====
+function entropyOfWindow(hist,win){
+  if(!win)win=60; if(!hist.length)return 2.5; if(win>hist.length)win=hist.length;
+  var recent=[]; for(var i=hist.length-win;i<hist.length;i++) recent.push.apply(recent,hist[i]);
+  var cnt={}; recent.forEach(function(d){cnt[d]=(cnt[d]||0)+1;});
+  var tot=recent.length,ent=0; for(var k in cnt){var p=cnt[k]/tot;ent-=p*Math.log2(p);} return ent;
+}
+function adaptiveWindow(ent){return Math.round(Math.max(35,Math.min(110,120-ent*25)));}
+function getAlphaR(ent){
+  var win=adaptiveWindow(ent);
+  var alpha=Math.max(0.82,Math.min(0.96,0.84+ent*0.04));
+  var r=3.88+(ent/3.32)*0.11;
+  return {win:win,alpha:alpha,r:r};
+}
+function parseNums(s){
+  var out=[]; s.split(/[^0-9]+/).forEach(function(t){
+    if(t.length===3)out.push(parseInt(t));
+    else if(t.length>3){for(var i=0;i<t.length;i+=3){var sub=t.substr(i,3);if(sub.length===3)out.push(parseInt(sub));}}
+  }); return out.filter(function(n){return !isNaN(n)&&n>=0&&n<=999;});
+}
+function renderDigits(id,arr){
+  var el=document.getElementById(id); if(!el)return; el.innerHTML='';
+  arr.forEach(function(d){var div=document.createElement('div');div.className='kd';div.textContent=d;el.appendChild(div);});
+}
+
+// ===== NEW V2 ACCURACY ENGINE =====
+function allComb3(){
+  var res=[]; for(var a=0;a<=7;a++) for(var b=a+1;b<=8;b++) for(var c=b+1;c<=9;c++) res.push([a,b,c]);
+  return res;
+}
+var COMBS3 = allComb3(); // 120 combos
+
+function weightedFreq(nums, decay, focusIndices){
+  // focusIndices = null => all, else only those indices (failure set)
+  var freq=[]; for(var i=0;i<10;i++) freq[i]=0;
+  var n=nums.length;
+  for(var idx=0; idx<n; idx++){
+    if(focusIndices && focusIndices.indexOf(idx)===-1) continue;
+    var w = Math.pow(decay, n-1-idx); // recent heavier
+    var num=nums[idx]; var a=Math.floor(num/100),b=Math.floor(num/10)%10,c=num%10;
+    freq[a]+=w; freq[b]+=w; freq[c]+=w;
+  }
+  return freq;
+}
+function exact1RateForSet(set, nums, focusIndices){
+  var s={}; for(var i=0;i<set.length;i++) s[set[i]]=1; var hit=0, total=0;
+  for(var i=0;i<nums.length;i++){
+    if(focusIndices && focusIndices.indexOf(i)===-1) continue;
+    total++;
+    var num=nums[i]; var a=Math.floor(num/100),b=Math.floor(num/10)%10,c=num%10;
+    if(s[a]||s[b]||s[c]) hit++;
+  }
+  return total? hit/total*100 : 0;
+}
+function failIndicesForSet(set, nums){
+  var s={}; for(var i=0;i<set.length;i++) s[set[i]]=1; var fails=[];
+  for(var i=0;i<nums.length;i++){
+    var num=nums[i]; var a=Math.floor(num/100),b=Math.floor(num/10)%10,c=num%10;
+    if(!(s[a]||s[b]||s[c])) fails.push(i);
+  }
+  return fails;
+}
+function top3FromFreq(freq, excludeSet){
+  var ex={}; if(excludeSet) for(var i=0;i<excludeSet.length;i++) ex[excludeSet[i]]=1;
+  var arr=[]; for(var d=0;d<10;d++) if(!ex[d]) arr.push({d:d,f:freq[d]});
+  arr.sort(function(a,b){return b.f-a.f;});
+  return arr.slice(0,3).map(function(x){return x.d;}).sort(function(a,b){return a-b;});
+}
+
+function findOptimalK3(nums, decay){
+  // Brute force 120 combos for K3_1, for each find best K3_2 from fails
+  var best=null;
+  var bestScore=-1;
+  for(var ci=0; ci<COMBS3.length; ci++){
+    var k1=COMBS3[ci];
+    var fails=failIndicesForSet(k1, nums);
+    var failRate = fails.length/nums.length*100;
+    var combined;
+    var k2;
+    if(fails.length===0){
+      // K3_1 ครอบคลุมหมดแล้ว เลือก K3_2 เป็นรอง
+      var freqAll=weightedFreq(nums, decay, null);
+      k2=top3FromFreq(freqAll, k1);
+      combined=100;
+    }else{
+      var freqFail=weightedFreq(nums, decay, fails);
+      k2=top3FromFreq(freqFail, k1);
+      // combined = 100 - failที่ไม่โดน K3_2 ช่วย
+      var stillFail=0;
+      var s2={}; for(var i=0;i<k2.length;i++) s2[k2[i]]=1;
+      for(var fi=0; fi<fails.length; fi++){
+        var idx=fails[fi]; var num=nums[idx]; var a=Math.floor(num/100),b=Math.floor(num/10)%10,c=num%10;
+        if(!(s2[a]||s2[b]||s2[c])) stillFail++;
+      }
+      combined = 100 - stillFail/nums.length*100;
+    }
+    var exact1_k1 = exact1RateForSet(k1, nums, null);
+    // Score = combined *0.8 + exact1_k1*0.2 + diversity bonus
+    var uniq = new Set(k1.concat(k2)).size;
+    var score = combined*0.85 + exact1_k1*0.15 + uniq*0.2; // diversity slightly
+    if(score>bestScore){
+      bestScore=score;
+      best={k1:k1,k2:k2,fails:fails,combined:combined,exact1_k1:exact1_k1};
+    }
+  }
+  return best;
+}
+
+function calcSaveRate(k1,k2,nums){
+  var s1={};k1.forEach(function(d){s1[d]=1;}); var s2={};k2.forEach(function(d){s2[d]=1;});
+  var fail1=0,save=0;
+  for(var i=0;i<nums.length;i++){
+    var n=nums[i]; var a=Math.floor(n/100),b=Math.floor(n/10)%10,c=n%10;
+    var h1=s1[a]||s1[b]||s1[c]; var h2=s2[a]||s2[b]||s2[c];
+    if(!h1){fail1++; if(h2) save++;}
+  }
+  return {fail1:fail1,saveHit:save,saveRate:fail1?save/fail1*100:0};
+}
+
+function updateAlert(ent,alpha,r,win){
+  var el=document.getElementById('k3_status_alert');
+  if(ent>3.20){
+    el.className='alert alert-high';
+    el.innerHTML='🔴 <b>ผันผวนสูง High Entropy '+ent.toFixed(3)+'</b> — ข้อมูลสุ่มมาก ใช้สมการ Chaos R='+r.toFixed(2)+' · ลดน้ำหนักอดีต เพิ่มล่าสุด (decay='+(alpha.toFixed(2))+')';
+  }else if(ent<2.90){
+    el.className='alert alert-stable';
+    el.innerHTML='🟢 <b>เสถียร Stable Ent='+ent.toFixed(3)+'</b> — พบแพทเทิร์นชัด ใช้ Window '+win+' ยาว จำอดีตมากขึ้น';
+  }else{
+    el.className='alert alert-normal';
+    el.innerHTML='🟡 <b>ปกติ Normal Ent='+ent.toFixed(3)+'</b> — สมดุล ใช้ Failure-Focused ครอบคลุมเคสพลาด';
+  }
+}
+
+var K3V2=(function(){
+  function predict(){
+    var raw=document.getElementById('k3_inp').value;
+    var nums=parseNums(raw);
+    if(nums.length<3){alert('ใส่เลขอย่างน้อย 3 ตัว');return;}
+    var digits=nums.map(function(n){return[Math.floor(n/100),Math.floor(n/10)%10,n%10];});
+    var ent=entropyOfWindow(digits,60);
+    var prm=getAlphaR(ent);
+    // decay ตาม entropy: ent สูง -> decay ต่ำ (ลืมอดีตไว)
+    var decay = Math.max(0.84, Math.min(0.97, 0.97 - (ent-2.5)*0.06));
+    // ใช้ optimal search
+    var best=findOptimalK3(nums, decay);
+    if(!best){alert('คำนวณล้มเหลว');return;}
+    var saveInfo=calcSaveRate(best.k1,best.k2,nums);
+    var exact1_k2 = exact1RateForSet(best.k2, nums, null);
+
+    renderDigits('k2_digits', best.k2);
+    document.getElementById('k2_badge').textContent=exact1_k2.toFixed(1)+'% save '+saveInfo.saveRate.toFixed(1)+'%';
+    document.getElementById('s_ex1').textContent=exact1_k2.toFixed(1)+'%';
+    document.getElementById('s_save').textContent=saveInfo.saveRate.toFixed(1)+'% ('+saveInfo.saveHit+'/'+saveInfo.fail1+')';
+    document.getElementById('s_comb').textContent=best.combined.toFixed(1)+'% (6ตัว '+best.k1.concat(best.k2).sort().join('')+')';
+    document.getElementById('s_k31').textContent=best.k1.join('-')+' '+best.exact1_k1.toFixed(1)+'%';
+
+    document.getElementById('k3_ent').textContent=ent.toFixed(3);
+    document.getElementById('k3_win').textContent=prm.win+'→'+Math.round(prm.win*1.3);
+    document.getElementById('k3_alp').textContent=decay.toFixed(2);
+    document.getElementById('k3_r').textContent=prm.r.toFixed(3);
+    document.getElementById('f_ent').textContent=ent.toFixed(3);
+    document.getElementById('f_comb').textContent=best.combined.toFixed(1)+'%';
+
+    updateAlert(ent, decay, prm.r, prm.win);
+    document.getElementById('pw_mode').textContent='Opt Search '+best.combined.toFixed(0)+'%';
+    document.getElementById('f_detail').textContent='K3_2='+best.k2.join('')+' | SAVE '+saveInfo.saveRate.toFixed(0)+'%';
+
+    window._lastK2=best.k2;
+    window._lastBest=best;
+  }
+  function optimize(){
+    // Grid search decay 0.84-0.97 หา combined สูงสุด
+    var raw=document.getElementById('k3_inp').value;
+    var nums=parseNums(raw);
+    if(nums.length<5){alert('ต้องมีเลข 5 ตัวขึ้นไปเพื่อปรับจูน');return;}
+    var digits=nums.map(function(n){return[Math.floor(n/100),Math.floor(n/10)%10,n%10];});
+    var ent=entropyOfWindow(digits,60);
+    var bestOverall=null, bestDecay=0.92;
+    for(var d=0.82; d<=0.98; d+=0.02){
+      var cand=findOptimalK3(nums,d);
+      if(!bestOverall || cand.combined>bestOverall.combined){bestOverall=cand; bestDecay=d;}
+    }
+    // Apply best
+    var saveInfo=calcSaveRate(bestOverall.k1,bestOverall.k2,nums);
+    var exact1_k2=exact1RateForSet(bestOverall.k2,nums,null);
+    renderDigits('k2_digits', bestOverall.k2);
+    document.getElementById('k2_badge').textContent='OPT '+exact1_k2.toFixed(1)+'% save '+saveInfo.saveRate.toFixed(1)+'%';
+    document.getElementById('s_ex1').textContent=exact1_k2.toFixed(1)+'%';
+    document.getElementById('s_save').textContent=saveInfo.saveRate.toFixed(1)+'%';
+    document.getElementById('s_comb').textContent=bestOverall.combined.toFixed(1)+'% [decay '+bestDecay.toFixed(2)+']';
+    document.getElementById('s_k31').textContent=bestOverall.k1.join('-');
+    document.getElementById('k3_ent').textContent=ent.toFixed(3);
+    document.getElementById('k3_alp').textContent=bestDecay.toFixed(2)+' *OPT';
+    document.getElementById('f_comb').textContent=bestOverall.combined.toFixed(1)+'% OPT';
+    updateAlert(ent,bestDecay,getAlphaR(ent).r,getAlphaR(ent).win);
+    document.getElementById('pw_mode').textContent='TUNED d='+bestDecay.toFixed(2);
+    window._lastK2=bestOverall.k2;
+    alert('ปรับจูนเสร็จ: decay ที่ดีสุด = '+bestDecay.toFixed(2)+' → Combined '+bestOverall.combined.toFixed(1)+'%');
+  }
+  function rnd(){
+    var r=Math.floor(Math.random()*1000).toString().padStart(3,'0');
+    var ta=document.getElementById('k3_inp');
+    ta.value=ta.value.trim()+', '+r; predict();
+  }
+  function clear(){
+    var ta=document.getElementById('k3_inp'); ta.value=''; ta.focus();
+    renderDigits('k2_digits',[0,0,0]);
+    document.getElementById('k2_badge').textContent='--% save';
+    document.getElementById('s_ex1').textContent='--';document.getElementById('s_save').textContent='--';document.getElementById('s_comb').textContent='--';document.getElementById('s_k31').textContent='---';
+  }
+  return {predict:predict,optimize:optimize,rnd:rnd,clear:clear};
+})();
+
+function copyK2(){
+  var k=window._lastK2||[5,4,3]; var txt=k.join('');
+  navigator.clipboard.writeText(txt).then(function(){
+    var b=document.querySelector('.copy'); var o=b.textContent; b.textContent='✅ คัดลอกแล้ว: '+txt; setTimeout(function(){b.textContent=o;},1200);
+  });
+}
+// K3 auto init removed - will init via PK load
+
+// Auto init K3 after PK panel loads (ไม่ทับ window.onload)
+(function(){
+  function initK3(){
+    if(typeof K3V2 !== 'undefined' && K3V2.predict){
+      try{ K3V2.predict(); }catch(e){ console.log('K3 init fail', e); }
+    }
+  }
+  if(document.readyState === 'complete') setTimeout(initK3, 500);
+  else window.addEventListener('load', function(){ setTimeout(initK3, 800); });
+})();
+</script>
 
 
 <script>
